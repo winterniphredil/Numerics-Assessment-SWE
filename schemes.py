@@ -296,6 +296,7 @@ def ftcs_semi_impl_mat_h_2(uOld,hOld,c,nx): # h implicit, h first
     
     return uNew,hNew
 
+
 @scheme_wrapper("ftcs_semi_impl_mat_h_3")
 def ftcs_semi_impl_mat_h_3(uOld,hOld,c,nx): # u,h implicit, h first
     c = c/2.
@@ -304,7 +305,43 @@ def ftcs_semi_impl_mat_h_3(uOld,hOld,c,nx): # u,h implicit, h first
     B = np.eye(nx+1) + c * np.diagflat(uOld) @ D
     hNew = B.I @ (hOld - c * np.diagflat(hOld) @ D @ uOld)
     A = np.eye(nx+1) + c * np.diagflat(uOld) @ D
-    uNew = A.I @ (uOld - c * g * D @ hNew)
+    uNew = A.I @ (uOld - c * g * D @ hOld)
+    
+    return uNew,hNew
+
+@scheme_wrapper("ftcs_semi_impl_mat_sim_1")
+def ftcs_semi_impl_mat_sim_1(uOld,hOld,c,nx): # u implicit, h first
+    c = c/2.
+    D = D_mat(nx)
+    
+    hNew = hOld - c * (np.diagflat(uOld) @ D @ hOld + np.diagflat(hOld) @ D @ uOld)
+    A = np.eye(nx+1) + c * np.diagflat(uOld) @ D
+    uNew = A.I @ (uOld - c * g * D @ hOld)
+    
+    return uNew,hNew
+
+
+@scheme_wrapper("ftcs_semi_impl_mat_sim_2")
+def ftcs_semi_impl_mat_sim_2(uOld,hOld,c,nx): # h implicit, h first
+    c = c/2.
+    D = D_mat(nx)
+    
+    B = np.eye(nx+1) + c * np.diagflat(uOld) @ D
+    hNew = B.I @ (hOld - c * np.diagflat(hOld) @ D @ uOld)
+    uNew = uOld - c * (g * D @ hOld + np.diagflat(uOld) @ D @ uOld)
+    
+    return uNew,hNew
+
+
+@scheme_wrapper("ftcs_semi_impl_mat_sim_3")
+def ftcs_semi_impl_mat_sim_3(uOld,hOld,c,nx): # u,h implicit, h first
+    c = c/2.
+    D = D_mat(nx)
+    
+    B = np.eye(nx+1) + c * np.diagflat(uOld) @ D
+    hNew = B.I @ (hOld - c * np.diagflat(hOld) @ D @ uOld)
+    A = np.eye(nx+1) + c * np.diagflat(uOld) @ D
+    uNew = A.I @ (uOld - c * g * D @ hOld)
     
     return uNew,hNew
 

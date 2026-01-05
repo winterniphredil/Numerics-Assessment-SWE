@@ -4,13 +4,13 @@ import time
 
 from quantities import mass, momentum
 
-from schemes import ftcs_semi_impl_u_1,ftcs_semi_impl_u_2,ftcs_semi_impl_u_3,ftcs_semi_impl_h_1,ftcs_semi_impl_h_2,ftcs_semi_impl_h_3,ftcs_u,ftcs_h,ftbs_u,ftbs_h
-from schemes import ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl_mat_u_3,ftcs_semi_impl_mat_h_1,ftcs_semi_impl_mat_h_2,ftcs_semi_impl_mat_h_3
+from schemes import ftcs_semi_impl_u_1,ftcs_semi_impl_u_2,ftcs_semi_impl_u_3,ftcs_semi_impl_h_1,ftcs_semi_impl_h_2,ftcs_semi_impl_h_3,ftcs_u,ftcs_h,ftbs_u,ftbs_h,ftcs_sim,ftbs_sim,ftcs_semi_impl_sim_1,ftcs_semi_impl_sim_2,ftcs_semi_impl_sim_3
+from schemes import ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl_mat_u_3,ftcs_semi_impl_mat_h_1,ftcs_semi_impl_mat_h_2,ftcs_semi_impl_mat_h_3,ftcs_semi_impl_mat_sim_1,ftcs_semi_impl_mat_sim_2,ftcs_semi_impl_mat_sim_3
 
 
-fns = [ftcs_u,ftcs_h,ftbs_u,ftbs_h,ftcs_semi_impl_u_1,ftcs_semi_impl_u_2,ftcs_semi_impl_u_3,ftcs_semi_impl_h_1,ftcs_semi_impl_h_2,ftcs_semi_impl_h_3]
-mat_fns = [ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl_mat_u_3,ftcs_semi_impl_mat_h_1,ftcs_semi_impl_mat_h_2,ftcs_semi_impl_mat_h_3]
-all_fns = fns + mat_fns
+fns = [ftcs_u,ftcs_h,ftcs_sim,ftbs_sim,ftbs_u,ftbs_h,ftcs_semi_impl_u_1,ftcs_semi_impl_u_2,ftcs_semi_impl_u_3,ftcs_semi_impl_h_1,ftcs_semi_impl_h_2,ftcs_semi_impl_h_3,ftcs_semi_impl_sim_1,ftcs_semi_impl_sim_2,ftcs_semi_impl_sim_3]
+mat_fns = [ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl_mat_u_3,ftcs_semi_impl_mat_h_1,ftcs_semi_impl_mat_h_2,ftcs_semi_impl_mat_h_3,ftcs_semi_impl_mat_sim_1,ftcs_semi_impl_mat_sim_2,ftcs_semi_impl_mat_sim_3]
+all_fns = fns+mat_fns
 
 run_times = {}
 fail_times = {}
@@ -30,7 +30,8 @@ def plot(h,u,n,fn):
     plt.ylabel('h / u')
     plt.ylim([-1,1])
     plt.pause(0.005)
-    
+
+
 def plot_m_m(mass_vec,mom_vec,fn):
     t = len(mass_vec)
     plt.cla()
@@ -63,14 +64,13 @@ def run_and_plot(fn,u_0,h_0):
     #plot_m_m(m,mom,fn)
     return fail_time
 
+
 def plot_times(r, f):
     plt.cla()
     
     x = np.arange(len(r))
     width = 0.4
-    multiplier = 0
     fig, ax = plt.subplots(layout='constrained')
-    keys = list(r.keys())
     
     ax.bar(x-0.2, list(r.values()), width, color = 'b', label = "actual time taken to run (no plots)") # change label if plotting
     ax.bar(x+0.2, list(f.values()), width, color = 'r', label = "time until error occurred, or 1 if no error occurred")
@@ -85,8 +85,8 @@ def plot_times(r, f):
 
 for fn in all_fns:
     
-    h_0 = np.mat(np.where(x%1. < 0.5, np.power(np.sin(2*x*np.pi)*0.5, 2), 0.)).T
-    u_0 = np.mat(np.full(nx+1,0.0, dtype=float)).T
+    h_0 = np.mat(np.where((x%1. < 0.75) & (x%1. > 0.25), np.power(np.sin(2*(x-0.25)*np.pi)*0.5, 2), 0.)+0.25).T
+    u_0 = np.mat(np.full(nx+1,0.1, dtype=float)).T
     
     start_time = time.time()
     fail_time = run_and_plot(fn,u_0,h_0)
