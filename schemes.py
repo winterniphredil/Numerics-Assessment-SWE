@@ -52,14 +52,6 @@ def ftcs_u(uOld,hOld,c,nx): # u first
     uNew = uOld - c * (g * D @ hOld + np.diagflat(uOld) @ D @ uOld)
     hNew = hOld - c * (np.diagflat(uNew) @ D @ hOld + np.diagflat(hOld) @ D @ uNew)
     
-    #uNew = uOld.copy()
-    #hNew = hOld.copy()
-    
-    #for j in range(0,nx+1):
-    #    uNew[j] = uOld[j] - c*((uOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j-1])) + g*(hOld[(j+1)%(nx+1)]-hOld[j-1]))
-    #for j in range(0,nx+1):
-    #    hNew[j] = hOld[j] - c*(uNew[j]*(hOld[(j+1)%(nx+1)]-hOld[j-1]) + hOld[j]*(uNew[(j+1)%(nx+1)]-uNew[j-1]))
-    
     return uNew,hNew
 
 
@@ -71,15 +63,6 @@ def ftcs_h(uOld,hOld,c,nx): # h first
     hNew = hOld - c * (np.diagflat(uOld) @ D @ hOld + np.diagflat(hOld) @ D @ uOld)
     uNew = uOld - c * (g * D @ hNew + np.diagflat(uOld) @ D @ uOld)
     
-    
-    #uNew = uOld.copy()
-    #hNew = hOld.copy()
-    
-    #for j in range(0,nx+1):
-    #    hNew[j] = hOld[j] - c*(uOld[j]*(hOld[(j+1)%(nx+1)]-hOld[j-1]) + hOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j-1]))
-    #for j in range(0,nx+1):
-    #    uNew[j] = uOld[j] - c*((uOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j-1])) + g*(hNew[(j+1)%(nx+1)]-hNew[j-1]))
-        
     return uNew,hNew
 
 
@@ -90,15 +73,6 @@ def ftbs_u(uOld,hOld,c,nx): # u first
     uNew = uOld - c * (g * B @ hOld + np.diagflat(uOld) @ B @ uOld)
     hNew = hOld - c * (np.diagflat(uNew) @ B @ hOld + np.diagflat(hOld) @ B @ uNew)
     
-    
-    #uNew = uOld.copy()
-    #hNew = hOld.copy()
-    
-    #for j in range(0,nx+1):
-    #    uNew[j] = uOld[j] - c*((uOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j])) + g*(hOld[(j+1)%(nx+1)]-hOld[j]))
-    #for j in range(0,nx+1):
-    #    hNew[j] = hOld[j] - c*(uNew[j]*(hOld[(j+1)%(nx+1)]-hOld[j]) + hOld[j]*(uNew[(j+1)%(nx+1)]-uNew[j]))
-    
     return uNew,hNew
 
 
@@ -108,14 +82,6 @@ def ftbs_h(uOld,hOld,c,nx): # h first
     
     hNew = hOld - c * (np.diagflat(uOld) @ B @ hOld + np.diagflat(hOld) @ B @ uOld)
     uNew = uOld - c * (g * B @ hNew + np.diagflat(uOld) @ B @ uOld)
-    
-    #uNew = uOld.copy()
-    #hNew = hOld.copy()
-    
-    #for j in range(0,nx+1):
-    #    hNew[j] = hOld[j] - c*(uOld[j]*(hOld[(j+1)%(nx+1)]-hOld[j]) + hOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j]))
-    #for j in range(0,nx+1):
-    #    uNew[j] = uOld[j] - c*((uOld[j]*(uOld[(j+1)%(nx+1)]-uOld[j])) + g*(hNew[(j+1)%(nx+1)]-hNew[j]))
     
     return uNew,hNew
 
