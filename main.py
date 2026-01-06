@@ -10,12 +10,12 @@ from schemes import ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl
 
 fns = [ftcs_u,ftcs_h,ftcs_sim,ftbs_sim,ftbs_u,ftbs_h,ftcs_semi_impl_u_1,ftcs_semi_impl_u_2,ftcs_semi_impl_u_3,ftcs_semi_impl_h_1,ftcs_semi_impl_h_2,ftcs_semi_impl_h_3,ftcs_semi_impl_sim_1,ftcs_semi_impl_sim_2,ftcs_semi_impl_sim_3]
 mat_fns = [ftcs_semi_impl_mat_u_1,ftcs_semi_impl_mat_u_2,ftcs_semi_impl_mat_u_3,ftcs_semi_impl_mat_h_1,ftcs_semi_impl_mat_h_2,ftcs_semi_impl_mat_h_3,ftcs_semi_impl_mat_sim_1,ftcs_semi_impl_mat_sim_2,ftcs_semi_impl_mat_sim_3]
-all_fns = fns+mat_fns
+all_fns = mat_fns
 
 run_times = {}
 fail_times = {}
-nx = 160 
-nt = 80
+nx = 320 
+nt = 160
 dx = 1./nx
 dt = 1./nt
 
@@ -27,6 +27,7 @@ def plot(h,u,n,fn):
     plt.plot(x, u, 'g', label='u at time '+str(n*dt))
     plt.title(fn.__name__)
     plt.legend(loc='best')
+    plt.xlabel('x')
     plt.ylabel('h / u')
     plt.ylim([-1,1])
     plt.pause(0.005)
@@ -61,6 +62,7 @@ def run_and_plot(fn,u_0,h_0):
         #plot(h_0,u_0,n,fn) #comment in or out to show dynamic plots of h and u
         m.append(mass(h_0))
         mom.append(momentum(h_0.T,u_0.T))
+    plot(h_0,u_0,nt,fn) #comment in or out to show final plots of h and u
     #plot_m_m(m,mom,fn) #comment in or out to show plots of mass and momentum over time of running simulation
     return fail_time
 
@@ -86,14 +88,16 @@ def plot_times(r, f):
 for fn in all_fns:
     
     #initial conditions below can be changed
-    h_0 = np.mat(np.where((x%1. < 0.75) & (x%1. > 0.25), np.power(np.sin(2*(x-0.25)*np.pi)*0.5, 2), 0.)+0.25).T
+    #h_0 = np.mat(np.where((x%1. < 0.75) & (x%1. > 0.25), np.power(np.sin(2*(x-0.25)*np.pi)*0.5, 2), 0.)+0.25).T #symmetric
+    h_0 = np.mat(0.25 + 0.25*np.power(np.sin(2*x*np.pi),2) + 0.125*np.power(np.cos(4*(x-0.1)*np.pi),2)).T #non-symmetric
     u_0 = np.mat(np.full(nx+1,0.1, dtype=float)).T
+    #plot(h_0,u_0,0,"Initial conditions")
     
     start_time = time.time()
     fail_time = run_and_plot(fn,u_0,h_0)
     run_times[fn.__name__] = time.time()-start_time
     fail_times[fn.__name__] = fail_time
 
-plot_times(run_times, fail_times) #comment in or out to show bar graph of how long the code took to run and how far it got before an error
+#plot_times(run_times, fail_times) #comment in or out to show bar graph of how long the code took to run and how far it got before an error
 
 
