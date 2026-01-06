@@ -58,10 +58,10 @@ def run_and_plot(fn,u_0,h_0):
         if failed:
             fail_time = n*dt
             break
-        #plot(h_0,u_0,n,fn)
+        #plot(h_0,u_0,n,fn) #comment in or out to show dynamic plots of h and u
         m.append(mass(h_0))
         mom.append(momentum(h_0.T,u_0.T))
-    #plot_m_m(m,mom,fn)
+    #plot_m_m(m,mom,fn) #comment in or out to show plots of mass and momentum over time of running simulation
     return fail_time
 
 
@@ -85,6 +85,7 @@ def plot_times(r, f):
 
 for fn in all_fns:
     
+    #initial conditions below can be changed
     h_0 = np.mat(np.where((x%1. < 0.75) & (x%1. > 0.25), np.power(np.sin(2*(x-0.25)*np.pi)*0.5, 2), 0.)+0.25).T
     u_0 = np.mat(np.full(nx+1,0.1, dtype=float)).T
     
@@ -93,6 +94,6 @@ for fn in all_fns:
     run_times[fn.__name__] = time.time()-start_time
     fail_times[fn.__name__] = fail_time
 
-plot_times(run_times, fail_times)
+plot_times(run_times, fail_times) #comment in or out to show bar graph of how long the code took to run and how far it got before an error
 
 

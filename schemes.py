@@ -67,7 +67,7 @@ def ftcs_h(uOld,hOld,c,nx): # h first
 
 
 @scheme_wrapper("ftcs_sim")
-def ftcs_sim(uOld,hOld,c,nx): # h first
+def ftcs_sim(uOld,hOld,c,nx):
     c = c/2.
     D = D_mat(nx)
     
@@ -98,7 +98,7 @@ def ftbs_h(uOld,hOld,c,nx): # h first
 
 
 @scheme_wrapper("ftbs_sim")
-def ftbs_sim(uOld,hOld,c,nx): # h first
+def ftbs_sim(uOld,hOld,c,nx):
     B = B_mat(nx)
     
     hNew = hOld - c * (np.diagflat(uOld) @ B @ hOld + np.diagflat(hOld) @ B @ uOld)
@@ -192,7 +192,7 @@ def ftcs_semi_impl_h_3(uOld,hOld,c,nx): # u,h implicit, h first
 
 
 @scheme_wrapper("ftcs_semi_impl_sim_1")
-def ftcs_semi_impl_sim_1(uOld,hOld,c,nx): # u implicit, h first
+def ftcs_semi_impl_sim_1(uOld,hOld,c,nx): # u implicit
     c = c/2.
     uNew = uOld.copy()
     hNew = hOld.copy()
@@ -206,7 +206,7 @@ def ftcs_semi_impl_sim_1(uOld,hOld,c,nx): # u implicit, h first
 
 
 @scheme_wrapper("ftcs_semi_impl_sim_2")
-def ftcs_semi_impl_sim_2(uOld,hOld,c,nx): # h implicit, h first
+def ftcs_semi_impl_sim_2(uOld,hOld,c,nx): # h implicit
     c = c/2.
     uNew = uOld.copy()
     hNew = hOld.copy()
@@ -220,7 +220,7 @@ def ftcs_semi_impl_sim_2(uOld,hOld,c,nx): # h implicit, h first
 
 
 @scheme_wrapper("ftcs_semi_impl_sim_3")
-def ftcs_semi_impl_sim_3(uOld,hOld,c,nx): # u,h implicit, h first
+def ftcs_semi_impl_sim_3(uOld,hOld,c,nx): # u,h implicit
     c = c/2.
     uNew = uOld.copy()
     hNew = hOld.copy()
@@ -310,7 +310,7 @@ def ftcs_semi_impl_mat_h_3(uOld,hOld,c,nx): # u,h implicit, h first
     return uNew,hNew
 
 @scheme_wrapper("ftcs_semi_impl_mat_sim_1")
-def ftcs_semi_impl_mat_sim_1(uOld,hOld,c,nx): # u implicit, h first
+def ftcs_semi_impl_mat_sim_1(uOld,hOld,c,nx): # u implicit
     c = c/2.
     D = D_mat(nx)
     
@@ -322,7 +322,7 @@ def ftcs_semi_impl_mat_sim_1(uOld,hOld,c,nx): # u implicit, h first
 
 
 @scheme_wrapper("ftcs_semi_impl_mat_sim_2")
-def ftcs_semi_impl_mat_sim_2(uOld,hOld,c,nx): # h implicit, h first
+def ftcs_semi_impl_mat_sim_2(uOld,hOld,c,nx): # h implicit
     c = c/2.
     D = D_mat(nx)
     
@@ -334,7 +334,7 @@ def ftcs_semi_impl_mat_sim_2(uOld,hOld,c,nx): # h implicit, h first
 
 
 @scheme_wrapper("ftcs_semi_impl_mat_sim_3")
-def ftcs_semi_impl_mat_sim_3(uOld,hOld,c,nx): # u,h implicit, h first
+def ftcs_semi_impl_mat_sim_3(uOld,hOld,c,nx): # u,h implicit
     c = c/2.
     D = D_mat(nx)
     
