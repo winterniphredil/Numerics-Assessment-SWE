@@ -14,8 +14,8 @@ all_fns = mat_fns
 
 run_times = {}
 fail_times = {}
-nx = 320 
-nt = 160
+nx = 160 
+nt = 80
 dx = 1./nx
 dt = 1./nt
 
@@ -62,8 +62,8 @@ def run_and_plot(fn,u_0,h_0):
         #plot(h_0,u_0,n,fn) #comment in or out to show dynamic plots of h and u
         m.append(mass(h_0))
         mom.append(momentum(h_0.T,u_0.T))
-    plot(h_0,u_0,nt,fn) #comment in or out to show final plots of h and u
-    #plot_m_m(m,mom,fn) #comment in or out to show plots of mass and momentum over time of running simulation
+    #plot(h_0,u_0,nt,fn) #comment in or out to show final plots of h and u
+    plot_m_m(m,mom,fn) #comment in or out to show plots of mass and momentum over time of running simulation
     return fail_time
 
 
